@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}{{ project.title }} &mdash; {{ profile.full_name if profile else "Portfolio" }}{% endblock %}
+
+{% block content %}
+<section class="section page-header">
+  <div class="container">
+    <a href="{{ url_for('main.projects') }}" class="link-arrow back-link"><i class="bi bi-arrow-left"></i> All projects</a>
+    <p class="mono-label eyebrow mt-3">// project</p>
+    <h1 class="section-title">{{ project.title }}</h1>
+    <div class="tech-tags mt-2">
+      {% for t in project.tech_list() %}<span>{{ t }}</span>{% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section pt-0">
+  <div class="container">
+    <div class="row gy-4">
+      <div class="col-lg-8">
+        {% if project.image_url %}
+        <img src="{{ project.image_url }}" alt="{{ project.title }}" class="project-detail-image mb-4">
+        {% endif %}
+        <p class="bio-text">{{ project.description or project.summary }}</p>
+      </div>
+      <div class="col-lg-4">
+        <div class="info-panel">
+          <h2 class="subsection-title">Links</h2>
+          <div class="d-grid gap-2">
+            {% if project.live_url %}
+            <a href="{{ project.live_url }}" target="_blank" rel="noopener" class="btn btn-accent">
+              <i class="bi bi-box-arrow-up-right"></i> Live site
+            </a>
+            {% endif %}
+            {% if project.github_url %}
+            <a href="{{ project.github_url }}" target="_blank" rel="noopener" class="btn btn-outline-accent">
+              <i class="bi bi-github"></i> Source code
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,20 @@
+# Environment / secrets
+.env
+ca.pem
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+
+# OS / editor
+.DS_Store
+.vscode/
+*.log
+
+# Flask
+instance/

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}404 &mdash; Not Found{% endblock %}
+{% block content %}
+<section class="section text-center">
+  <div class="container">
+    <p class="mono-label text-accent">$ curl {{ request.path }}</p>
+    <h1 class="section-title">404 &mdash; page not found</h1>
+    <p class="bio-text">The page you're looking for doesn't exist.</p>
+    <a href="{{ url_for('main.home') }}" class="btn btn-accent mt-3">Back home</a>
+  </div>
+</section>
+{% endblock %}

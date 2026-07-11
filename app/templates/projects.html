@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Projects &mdash; {{ profile.full_name if profile else "Portfolio" }}{% endblock %}
+
+{% block content %}
+<section class="section page-header">
+  <div class="container">
+    <p class="mono-label eyebrow">// work</p>
+    <h1 class="section-title">Projects</h1>
+  </div>
+</section>
+
+<section class="section pt-0">
+  <div class="container">
+    {% if projects %}
+    <div class="row g-4">
+      {% for project in projects %}
+      <div class="col-md-6 col-lg-4">
+        <a href="{{ url_for('main.project_detail', slug=project.slug) }}" class="project-card">
+          <div class="project-card-media">
+            {% if project.image_url %}
+              <img src="{{ project.image_url }}" alt="{{ project.title }}">
+            {% else %}
+              <div class="project-card-media-placeholder"><i class="bi bi-code-slash"></i></div>
+            {% endif %}
+          </div>
+          <div class="project-card-body">
+            <h3>{{ project.title }}</h3>
+            <p>{{ project.summary }}</p>
+            <div class="tech-tags">
+              {% for t in project.tech_list()[:3] %}<span>{{ t }}</span>{% endfor %}
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted">No projects added yet &mdash; add some rows to the <code>project</code> table.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

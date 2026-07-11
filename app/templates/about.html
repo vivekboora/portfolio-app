@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}About &mdash; {{ profile.full_name if profile else "Portfolio" }}{% endblock %}
+
+{% block content %}
+<section class="section page-header">
+  <div class="container">
+    <p class="mono-label eyebrow">// about</p>
+    <h1 class="section-title">A little about me</h1>
+  </div>
+</section>
+
+<section class="section pt-0">
+  <div class="container">
+    <div class="row gy-5">
+      <div class="col-lg-7">
+        <p class="bio-text">{{ profile.bio if profile else "Bio coming soon." }}</p>
+
+        {% if experiences %}
+        <h2 class="subsection-title mt-5">Experience</h2>
+        <div class="timeline">
+          {% for exp in experiences %}
+          <div class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+              <p class="mono-label text-accent mb-1">{{ exp.start_date }} &ndash; {{ exp.end_date }}</p>
+              <h3>{{ exp.role }}</h3>
+              <p class="timeline-company">{{ exp.company }}{% if exp.location %} &middot; {{ exp.location }}{% endif %}</p>
+              <p>{{ exp.description }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="col-lg-5">
+        {% if skills %}
+        <div class="skills-panel">
+          <h2 class="subsection-title">Skills</h2>
+          {% for skill in skills %}
+          <div class="skill-bar-row">
+            <div class="d-flex justify-content-between">
+              <span>{{ skill.name }}</span>
+              <span class="mono-label">{{ skill.proficiency }}%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill" style="width: {{ skill.proficiency }}%;"></div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if profile %}
+        <div class="info-panel mt-4">
+          <h2 class="subsection-title">Info</h2>
+          <ul class="info-list">
+            {% if profile.location %}<li><i class="bi bi-geo-alt"></i> {{ profile.location }}</li>{% endif %}
+            {% if profile.email %}<li><i class="bi bi-envelope"></i> {{ profile.email }}</li>{% endif %}
+            {% if profile.phone %}<li><i class="bi bi-telephone"></i> {{ profile.phone }}</li>{% endif %}
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

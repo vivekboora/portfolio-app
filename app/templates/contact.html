@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Contact &mdash; {{ profile.full_name if profile else "Portfolio" }}{% endblock %}
+
+{% block content %}
+<section class="section page-header">
+  <div class="container">
+    <p class="mono-label eyebrow">// contact</p>
+    <h1 class="section-title">Let's talk</h1>
+  </div>
+</section>
+
+<section class="section pt-0">
+  <div class="container">
+    <div class="row gy-5">
+      <div class="col-lg-6">
+        <p class="bio-text">
+          Have a project, a role, or just a question? Fill out the form and it'll land straight
+          in my inbox (well&mdash;database, but I check it).
+        </p>
+        {% if profile %}
+        <ul class="info-list mt-4">
+          {% if profile.email %}<li><i class="bi bi-envelope"></i> {{ profile.email }}</li>{% endif %}
+          {% if profile.location %}<li><i class="bi bi-geo-alt"></i> {{ profile.location }}</li>{% endif %}
+        </ul>
+        {% endif %}
+      </div>
+      <div class="col-lg-6">
+        <form method="POST" class="contact-form" novalidate>
+          <div class="mb-3">
+            <label for="name" class="form-label mono-label">Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ form_data.name if form_data else '' }}" required>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label mono-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ form_data.email if form_data else '' }}" required>
+          </div>
+          <div class="mb-3">
+            <label for="subject" class="form-label mono-label">Subject</label>
+            <input type="text" class="form-control" id="subject" name="subject" value="{{ form_data.subject if form_data else '' }}">
+          </div>
+          <div class="mb-3">
+            <label for="message" class="form-label mono-label">Message</label>
+            <textarea class="form-control" id="message" name="message" rows="5" required>{{ form_data.message if form_data else '' }}</textarea>
+          </div>
+          <button type="submit" class="btn btn-accent">Send message</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
