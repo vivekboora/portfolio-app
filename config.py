@@ -1,10 +1,37 @@
 import os
+import base64
 from dotenv import load_dotenv
 
 # Load variables from a local .env file if present (used for local dev).
 # On Render, environment variables are set in the dashboard instead.
 basedir = os.path.abspath(os.path.dirname(__file__))
 load_dotenv(os.path.join(basedir, ".env"))
+
+
+def _materialize_ca_cert():
+    """
+    If CA_CERT_BASE64 is set (a single-line base64-encoded copy of the
+    Aiven CA certificate), decode it and write it out as ca.pem.
+
+    This sidesteps a common problem on hosts like Render where pasting a
+    multi-line PEM certificate into a text box in the dashboard corrupts
+    the newlines/characters, causing "PEM lib" / "NO_CERTIFICATE_OR_CRL_FOUND"
+    SSL errors. A single-line base64 string can't be corrupted the same way.
+    """
+    b64 = os.environ.get("CA_CERT_BASE64")
+    if not b64:
+        return
+    target_path = os.environ.get("SSL_CA_PATH", os.path.join(basedir, "ca.pem"))
+    try:
+        cert_bytes = base64.b64decode(b64)
+        with open(target_path, "wb") as f:
+            f.write(cert_bytes)
+    except Exception as exc:  # noqa: BLE001
+        # Fail loudly at startup rather than silently connecting without SSL.
+        raise RuntimeError(f"Failed to decode CA_CERT_BASE64 into {target_path}: {exc}")
+
+
+_materialize_ca_cert()
 
 
 def _build_db_uri():
